@@ -1,6 +1,7 @@
 package model.core.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ReadingRoom {
@@ -9,27 +10,25 @@ public class ReadingRoom {
   
   private Integer id;
   
-  private Integer bookedSeatsCount;
-  
   private String textbook;
   
-  private String courseNumber;
+  private Course course;
   
   private LocalDateTime beginTimeStamp;
   
   private LocalDateTime endTimeStamp;
   
-  
+  private List<User> userList;
 
-  public ReadingRoom(Integer id, Integer bookedSeatsCount, String textbook, String courseNumber,
-      LocalDateTime beginTimeStamp, LocalDateTime endTimeStamp) {
+  public ReadingRoom(String textbook, Course course, LocalDateTime beginTimeStamp,
+      LocalDateTime endTimeStamp, List<User> userList) {
     super();
     this.id = count.incrementAndGet();;
-    this.bookedSeatsCount = bookedSeatsCount;
     this.textbook = textbook;
-    this.courseNumber = courseNumber;
+    this.course = course;
     this.beginTimeStamp = beginTimeStamp;
     this.endTimeStamp = endTimeStamp;
+    this.userList = userList;
   }
 
   /**
@@ -47,20 +46,6 @@ public class ReadingRoom {
   }
 
   /**
-   * @return the bookedSeatsCount
-   */
-  public Integer getBookedSeatsCount() {
-    return bookedSeatsCount;
-  }
-
-  /**
-   * @param bookedSeatsCount the bookedSeatsCount to set
-   */
-  public void setBookedSeatsCount(Integer bookedSeatsCount) {
-    this.bookedSeatsCount = bookedSeatsCount;
-  }
-
-  /**
    * @return the textbook
    */
   public String getTextbook() {
@@ -75,17 +60,17 @@ public class ReadingRoom {
   }
 
   /**
-   * @return the courseNumber
+   * @return the course
    */
-  public String getCourseNumber() {
-    return courseNumber;
+  public Course getCourse() {
+    return course;
   }
 
   /**
-   * @param courseNumber the courseNumber to set
+   * @param course the course to set
    */
-  public void setCourseNumber(String courseNumber) {
-    this.courseNumber = courseNumber;
+  public void setCourse(Course course) {
+    this.course = course;
   }
 
   /**
@@ -116,13 +101,27 @@ public class ReadingRoom {
     this.endTimeStamp = endTimeStamp;
   }
 
+  /**
+   * @return the userList
+   */
+  public List<User> getUserList() {
+    return userList;
+  }
+
+  /**
+   * @param userList the userList to set
+   */
+  public void setUserList(List<User> userList) {
+    this.userList = userList;
+  }
+
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    builder.append("ReadingRoom [id=").append(id).append(", bookedSeatsCount=")
-        .append(bookedSeatsCount).append(", textbook=").append(textbook).append(", courseNumber=")
-        .append(courseNumber).append(", beginTimeStamp=").append(beginTimeStamp)
-        .append(", endTimeStamp=").append(endTimeStamp).append("]");
+    builder.append("ReadingRoom [id=").append(id).append(", textbook=").append(textbook)
+        .append(", course=").append(course).append(", beginTimeStamp=").append(beginTimeStamp)
+        .append(", endTimeStamp=").append(endTimeStamp).append(", userList=").append(userList)
+        .append("]");
     return builder.toString();
   }
 }

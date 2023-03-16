@@ -1,14 +1,23 @@
 package reading_room;
 
+import model.core.entity.User;
+import model.core.enums.Role;
 import view.login.LoginView;
+import view.user.StudentView;
 
 public class Main {
   public static void main(String[] args) {
-    System.out.println("Yo");
-    
     while (true) {
-      if (LoginView.login()) {
-        // logged in, show the next menu
+      User loggedInUser = LoginView.login();
+      if (loggedInUser == null) {
+        continue;
+      }
+      
+      // Authenticated user
+      if (Role.INSTRUCTOR.equals(loggedInUser.getRole())) {
+        
+      } else if (Role.STUDENT.equals(loggedInUser.getRole())) {
+        StudentView.bookRoom(loggedInUser);
       }
     }
   }
