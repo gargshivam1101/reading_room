@@ -23,10 +23,12 @@ public class StudentView {
     System.out.println("Enter the Time in HH:MM format");
     String inputTime = scanner.nextLine();
     
+    System.out.println("Enter the duration of booking in hours");
+    Integer duration = scanner.nextInt();
     String time = inputDate + " " + inputTime;
     
     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
     LocalDateTime timestamp = LocalDateTime.parse(time, dateFormatter);
-    StudentController.bookRoom(textbook, courseNumber, timestamp, loggedInUser);
+    StudentController.bookRoom(textbook, courseNumber, timestamp, loggedInUser, duration);
   }
 }

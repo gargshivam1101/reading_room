@@ -10,8 +10,9 @@ public class UserService {
   static User loggedInUser = null;
   
   static List<User> userList = new ArrayList<>(Arrays.asList(//
-      new User("Instructor", "Garg", "ins@garg.com", "ins", Role.INSTRUCTOR), //
-      new User("Student", "Garg", "stu@garg.com", "stu", Role.STUDENT //
+      new User("Instructor", "Prof", "ins@soen.com", "ins", Role.INSTRUCTOR), //
+      new User("Student", "1", "stu1@soen.com", "stu", Role.STUDENT), //
+      new User("Student", "2", "stu2@soen.com", "stu", Role.STUDENT //
       )));
       
   public static List<User> getUserList() {
@@ -23,7 +24,7 @@ public class UserService {
   }
   
   public static User login(String email, String password) {
-  
+    
     User lgInUser = getUserList().stream()
         .filter(user -> user.getEmail().equals(email) && user.getPassword().equals(password))
         .findFirst().orElse(null);

@@ -3,52 +3,41 @@ package model.bl.user;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import model.core.entity.Course;
 import model.core.entity.ReadingRoom;
 import model.core.entity.User;
+import model.course.CourseService;
+import model.room.ReadingRoomService;
 
 public class StudentService {
-  static List<ReadingRoom> readingRoomList = new ArrayList<>();
-  
-  public static List<ReadingRoom> getReadingRoomList() {
-    return readingRoomList;
-  }
-  
-  public static void pushReadingRoomList(ReadingRoom readingRoom) {
-    readingRoomList.add(readingRoom);
-  }
-  
-  public static void popReadingRoomList(ReadingRoom readingRoom) {
-    readingRoomList.remove(readingRoom);
-  }
   
   public static void bookRoom(String textbook, String courseNumber, LocalDateTime timestamp,
-      User loggedInUser) {
-    List<ReadingRoom> availableRooms = getReadingRoomList().stream().filter(
-        r -> r.getBeginTimeStamp().isBefore(timestamp) && r.getEndTimeStamp().isAfter(timestamp))
+      User loggedInUser, Integer duration) {
+    ReadingRoom availableRoom = ReadingRoomService.getReadingRoomList().stream()
+        .filter(r -> (r.getBeginTimeStamp().isBefore(timestamp)
+            || r.getBeginTimeStamp().isEqual(timestamp)) && r.getEndTimeStamp().isAfter(timestamp))
         .filter(r -> r.getTextbook().equalsIgnoreCase(textbook)
             || r.getCourse().getCourseNumber().equalsIgnoreCase(courseNumber))
-        .collect(Collectors.toList());
+        .findFirst().orElse(null);
     
-    // there will be only one available room, so
-    ReadingRoom availableRoom = availableRooms.get(0);
-    
-    if (availableRoom == null || availableRoom.getUserList().size() <= 10) {
+    if (availableRoom == null || availableRoom.getUserList().size() > 10) {
       // TODO: make a proper course instructor
-      Course course = new Course(courseNumber, loggedInUser);
+      Course course = CourseService.getCourseByNumber(courseNumber);
       List<User> newUL = new ArrayList<>();
       newUL.add(loggedInUser);
       
-      ReadingRoom newRR = new ReadingRoom(textbook, course, timestamp, timestamp, newUL);
-      pushReadingRoomList(newRR);
+      ReadingRoom newRR =
+          new ReadingRoom(textbook, course, timestamp, timestamp.plusHours(duration), newUL);
+      ReadingRoomService.pushReadingRoomList(newRR);
+      System.out.println("You have been given a new room with id " + newRR.getId());
     } else {
-      // add user by pushing in userlist
-      popReadingRoomList(availableRoom);
+      ReadingRoomService.popReadingRoomList(availableRoom);
       List<User> userList = availableRoom.getUserList();
       userList.add(loggedInUser);
       availableRoom.setUserList(userList);
-      pushReadingRoomList(availableRoom);
+      ReadingRoomService.pushReadingRoomList(availableRoom);
+      System.out
+          .println("You have been added to the existing room with id " + availableRoom.getId());
     }
   }
 }
