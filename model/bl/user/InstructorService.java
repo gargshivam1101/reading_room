@@ -1,11 +1,11 @@
 package model.bl.user;
 
 import java.util.List;
+import model.bl.course.CourseService;
+import model.bl.room.ReadingRoomService;
 import model.core.entity.Course;
 import model.core.entity.ReadingRoom;
 import model.core.entity.User;
-import model.course.CourseService;
-import model.room.ReadingRoomService;
 
 public class InstructorService {
   
@@ -20,5 +20,4 @@ public class InstructorService {
       }
     }
   }
-  
 }

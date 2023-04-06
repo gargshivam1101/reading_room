@@ -1,4 +1,4 @@
-package model.room;
+package model.bl.room;
 
 import java.util.ArrayList;
 import java.util.List;
